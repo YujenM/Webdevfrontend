@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 function Login(props) {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [login, setLogin] = useState({ email: '', password: '' });
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -16,7 +16,7 @@ function Login(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const trimmedEmail = login.email.trim();
         const trimmedPassword = login.password.trim();
 
@@ -33,12 +33,12 @@ function Login(props) {
             if (json.success) {
                 localStorage.setItem('token', json.authtoken);
                 navigate("/");
-                props.showalert("Login successful!", "success"); 
+                props.showalert("Login successful!", "success");
             } else {
                 props.showalert('Invalid credentials', "error");
             }
         } catch (error) {
-            props.showalert(error, "error"); 
+            props.showalert(error, "error");
         }
     };
 
@@ -50,46 +50,57 @@ function Login(props) {
     };
 
     return (
-        <div className="formcenter">
-            <div className='background flex flex-col justify-center items-center text-black'>
-                <h1 className='title text-center text-10xl'>Login <FontAwesomeIcon icon={icon.faBook}/></h1>
-                <form onSubmit={handleSubmit} className="w-full p-4">
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm">
+                <h1 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
+                    Login 
+                </h1>
+                <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-black mb-1" htmlFor="email">Email:</label>
                         <input
                             type="email"
                             name="email"
                             value={login.email}
                             onChange={onChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
-                            placeholder="Enter your email"
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="Email Address"
                         />
                     </div>
                     <div className="mb-4 relative">
-                        <label className="block text-black mb-1" htmlFor="password">Password:</label>
                         <input
                             type={passwordVisible ? 'text' : 'password'}
                             name="password"
                             value={login.password}
                             onChange={onChange}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none"
-                            placeholder="Enter your password"
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="Password"
                         />
                         <span
-                            className="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer mt-5"
+                            className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
                             onClick={togglePasswordVisibility}
                         >
                             <FontAwesomeIcon icon={passwordVisible ? icon.faEyeSlash : icon.faEye} />
                         </span>
                     </div>
-                    <div className='flex justify-center'>
-                        <button type='submit' className="buttonsubmit text-white font-bold py-2 rounded-lg">
-                            Login
-                        </button>
+                    <div className="flex items-center justify-between mb-4">
+                        <label className="flex items-center">
+                            <input type="checkbox" className="mr-2" /> Remember me
+                        </label>
+                        <Link to="/forgot-password" className="text-sm text-purple-500 hover:underline">
+                            Forgot password?
+                        </Link>
                     </div>
+                    <button
+                        type="submit"
+                        className="w-full py-2 text-white font-bold rounded-lg bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400"
+                    >
+                        Login
+                    </button>
                 </form>
-                <div className="gologin">
-                    <h1>Don't have an account? <Link to='/signup' className='gotosignuporlogin text-2xl ml-2'>Sign up</Link></h1>
+                <div className="mt-4 text-center">
+                    <p className="text-sm">
+                        Not a member? <Link to='/signup' className="text-purple-500 hover:underline">Sign up now</Link>
+                    </p>
                 </div>
             </div>
         </div>
