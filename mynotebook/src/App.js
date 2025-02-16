@@ -7,7 +7,7 @@ import Setting from './components/Setting';
 import Signup from './components/Signup';
 import Userlogin from './components/Userlogin';
 import Alert from './components/Alert';
-
+import Products from './components/Products';
 function App() {
   const [alert, setAlert] = useState(null);
 
@@ -43,6 +43,7 @@ function App() {
             <Route exact path="/about" element={<Setting showalert={showalert}/>} />
             <Route exact path="/userlogin" element={<Userlogin showalert={showalert} />} />
             <Route exact path="/signup" element={<Signup showalert={showalert} />} />
+            <Route exact path="/products" element={<Products/>}/>
           </Routes>
         </Router>
     </Notestate>

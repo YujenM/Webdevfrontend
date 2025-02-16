@@ -10,6 +10,12 @@ export const navbarinfo=[
         path: '/About',
         cName:'nav-text',
         
+    },
+    {
+        title:'Products',
+        path: '/products',
+        cName:'nav-text',
+        
     }
 
 ]
