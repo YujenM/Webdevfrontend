@@ -16,29 +16,37 @@ function Login(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         const trimmedEmail = login.email.trim();
         const trimmedPassword = login.password.trim();
 
         try {
-            const response = await fetch("http://localhost:2000/api/auth/login", {
+            const response = await fetch("http://127.0.0.1:8000/api/login", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
-                body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword }),
+                body: JSON.stringify({ 
+                    user_email: trimmedEmail, 
+                    user_password: trimmedPassword 
+                }),
             });
 
             const json = await response.json();
-            if (json.success) {
-                localStorage.setItem('token', json.authtoken);
-                navigate("/");
+
+            if (json.status === "success" && json.user) {
+                console.log("Login is successful!"); // Console log for success
+                localStorage.setItem('user_id', json.user.user_id); // Store user_id in localStorage
                 props.showalert("Login successful!", "success");
+                navigate("/");
             } else {
-                props.showalert('Invalid credentials', "error");
+                console.log(json.message || "Invalid credentials"); 
+                props.showalert(json.message || 'Invalid credentials', "error");
             }
         } catch (error) {
-            props.showalert(error, "error");
+            console.error("Login error:", error);
+            props.showalert('Something went wrong. Please try again later.', "error");
         }
     };
 

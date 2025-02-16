@@ -11,7 +11,7 @@ const Navbar = (props) => {
         setIsOpen(!isOpen);
     };
     const handlelogout=()=>{
-        localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
         props.showalert('Logout Succesfully','success')
         navigate('/userlogin')
         
@@ -33,7 +33,7 @@ const Navbar = (props) => {
                 </li>
                 ))}
             </ul>
-            {!localStorage.getItem('token')?<div className="auth-buttons">
+            {!localStorage.getItem('user_id')?<div className="auth-buttons">
                 <Link type='button' to='/Userlogin' className="login-btn">Login</Link>
                 <Link type='button' to='/signup' className="signup-btn">Signup</Link>
             </div>:

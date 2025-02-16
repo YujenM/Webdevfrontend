@@ -25,28 +25,37 @@ export default function Signup(props) {
             const trimmedEmail = signup.email.trim();
             const trimmedPassword = signup.password.trim();
             const trimmedName = signup.name.trim();
-
-            const response = await fetch("http://localhost:2000/api/auth/createuser", {
+    
+            const response = await fetch("http://127.0.0.1:8000/api/user", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: trimmedName, email: trimmedEmail, password: trimmedPassword }),
+                body: JSON.stringify({ 
+                    "user_name": trimmedName, 
+                    "user_email": trimmedEmail, 
+                    "user_password": trimmedPassword, 
+                }),
             });
-
+    
+            if (!response.ok) {
+                throw new Error("Failed to create account.");
+            }
+    
             const json = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('authtoken', json.authtoken);
-                setsignup({ name: '', email: '', password: '' });
-                props.showalert("Account Created", "success");
+    
+            if (json.status === "success" && json.data) {
+                localStorage.setItem('user_id', json.data.user_id); 
+                localStorage.setItem('user_name', json.data.user_name); 
+                
+                setsignup({ name: '', email: '', password: '', dob: '' });
+                props.showalert("Account Created Successfully", "success");
             } else {
-                if (json.error) {
-                    props.showalert(json.error, "warning");
-                }
+                props.showalert(json.message || "Signup failed", "warning");
             }
         } catch (error) {
-            alert("An unexpected error occurred. Please try again.");
+            console.error("Signup Error:", error);
+            props.showalert("An unexpected error occurred. Please try again.", "danger");
         }
     };
 
