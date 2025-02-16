@@ -1,110 +1,172 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import NoteContext from '../context/notes/Notecontext';
-import NoteItem from './NoteItem';
-import AddNotes from './AddNotes';
-import { useNavigate } from 'react-router-dom';
-import './Css/notes.css'
+import React, { useState } from "react";
 
-const Notes = (props) => {
-    const { notes, getNotes,editnote } = useContext(NoteContext);
-    const ref = useRef(null);
-    const refclose=useRef(null);
-    const modalRef = useRef(null);
-    // const navigate = useNavigate(); 
+function Inventory() {
+  const [inventory, setInventory] = useState([
+    { id: 1, name: "Laptop", quantity: 5, price: 1000 },
+    { id: 2, name: "Phone", quantity: 10, price: 500 },
+  ]);
 
-    // useEffect(() => {
-    //     if (localStorage.getItem('token')){
-    //         getNotes();
-    //     }else{
-    //         navigate('/userlogin')
+  const [sales, setSales] = useState([
+    { id: 1, salesName: "Laptop", salesQuantity: 2, unitCost: 1000 },
+    { id: 2, salesName: "Phone", salesQuantity: 3, unitCost: 500 },
+  ]);
 
-    //     }
-        
-    //     // eslint-disable-next-line 
-    // }, []);
-    const [note, setNote] = useState({ id :"",etitle:"",edescription:"",etag: ""});
-    const updateNote = (currentnote) => {
-        ref.current.click();
-        setNote({id:currentnote._id ,etitle:currentnote.title,edescription:currentnote.description,etag:currentnote.tag})
-    };
+  const [editItem, setEditItem] = useState(null);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
-    const toggleModal = () => {
-        if (modalRef.current) {
-            const isHidden = modalRef.current.classList.contains('hidden');
-            if (isHidden) {
-                modalRef.current.classList.remove('hidden');
-            } else {
-                modalRef.current.classList.add('hidden');
-            }
-        }
-    };
+  const handleEdit = (item) => {
+    setEditItem(item);
+  };
 
-
-    const handleInputChange = (e) => {
-        setNote({...note,[e.target.name]:e.target.value})
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try{
-            await editnote(note.id,note.etitle,note.edescription,note.etag);
-            refclose.current.click();
-            props.showalert('Notes Updated', 'info')
-        }catch(err){
-            // console.log(err)
-            props.showalert(err,"warning")
-        }    
-    };
-
-    return (
-        <div>
-            <button ref={ref} onClick={toggleModal} className="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5">
-                Toggle modal
-            </button>
-            <div
-                ref={modalRef}
-                className="hidden fixed top-0 left-0 z-50 w-full h-[calc(100%-1rem)] flex items-center justify-center   " >
-                <div className="relative modelbg  rounded-lg shadow p-4 w-full max-w-md">
-                    <div className="flex justify-between items-center border-b p-4">
-                        <h3 className="text-xl font-semibold titlemodel text-gray-900">Edit Note</h3>
-                        <button type="button" ref={refclose}  className="text-gray-400  rounded-lg w-8 h-8 m-2 modelbtn" onClick={toggleModal}>
-                            <svg className="w-3 h-3" fill="none" viewBox="0 0 14 14" stroke="currentColor" strokeWidth="2">
-                                <path d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div className="p-4">
-                        <form className="space-y-4">
-                            <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Title</label>
-                                <input type="text" name="etitle" id="etitle" onChange={handleInputChange} value={note.etitle} className="bg-gray-50 border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required/>
-                            </div>
-                            <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                                <input type="text" name="edescription" id="edescription" onChange={handleInputChange} value={note.edescription} className="bg-gray-50 border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required/>
-                            </div>
-                            <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Tag</label>
-                                <input type="text" name="etag" id="etag" onChange={handleInputChange} value={note.etag} className="bg-gray-50 border-gray-300 text-gray-900 rounded-lg w-full p-2.5" required/>
-                            </div>
-                            <button type="submit" className='modelbtn rounded-lg' onClick={handleSubmit} >
-                                Edit Note
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <AddNotes showalert={props.showalert}/>
-            <div className="nonotes">
-                {notes.length===0 && 
-                    <h1>Write It Down, Keep It Handy.</h1>
-                }
-            </div>
-            {notes.map((note) => (
-                <NoteItem key={note._id} updateNote={updateNote} note={note}  showalert={props.showalert} />
-            ))}
-        </div>
+  const handleSave = () => {
+    setInventory(
+      inventory.map((item) => (item.id === editItem.id ? editItem : item))
     );
-};
+    setEditItem(null);
+  };
 
-export default Notes;
+  const handleDelete = (id) => {
+    setInventory(inventory.filter((item) => item.id !== id));
+  };
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  return (
+    <div
+      className={`p-4 min-h-screen transition-all duration-500 ${
+        isDarkTheme ? "bg-gray-900 text-white" : "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+      }`}
+    >
+      <div className={`shadow-lg rounded-lg p-4 ${isDarkTheme ? "bg-gray-800" : "bg-white"}`}>
+        <h1 className={`text-2xl font-bold text-center mb-6 ${isDarkTheme ? "text-white" : "bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"}`}>
+          Inventory Management
+        </h1>
+
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className={`mb-4 py-2 px-4 rounded-lg font-bold ${
+            isDarkTheme
+              ? "bg-gray-700 text-white hover:bg-gray-600"
+              : "bg-gradient-to-r from-purple-400 to-pink-500 text-white hover:from-pink-500 hover:to-purple-400"
+          }`}
+        >
+          Toggle {isDarkTheme ? "Light" : "Dark"} Theme
+        </button>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className={`shadow-lg rounded-lg p-4 ${isDarkTheme ? "bg-gray-800" : "bg-white"}`}>
+            <h1 className="text-xl font-bold text-center mb-4">Inventory</h1>
+            <table className="mt-4 border-collapse border w-full">
+              <thead>
+                <tr>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>ID</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Name</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Quantity</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Price</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inventory.map((item) => (
+                  <tr key={item.id}>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{item.id}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{item.name}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{item.quantity}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{item.price}</td>
+                    <td className={`border p-2`}>
+                      <button
+                        className="bg-blue-500 text-white px-2 py-1 mr-2 rounded"
+                        onClick={() => handleEdit(item)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className={`shadow-lg rounded-lg p-4 ${isDarkTheme ? "bg-gray-800" : "bg-white"}`}>
+            <h1 className="text-xl font-bold text-center mb-4">Sales</h1>
+            <table className="mt-4 border-collapse border w-full">
+              <thead>
+                <tr>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>ID</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Sales Name</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Sales Quantity</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Unit Cost</th>
+                  <th className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>Total Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sales.map((sale) => (
+                  <tr key={sale.id}>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{sale.id}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{sale.salesName}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{sale.salesQuantity}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>{sale.unitCost}</td>
+                    <td className={`border p-2 ${isDarkTheme ? "text-white" : "text-black"}`}>
+                      {sale.salesQuantity * sale.unitCost}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {editItem && (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-lg">
+              <h2 className="text-lg font-bold mb-2">Edit Item</h2>
+              <input
+                type="text"
+                value={editItem.name}
+                onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+                className="border p-2 w-full mb-2"
+              />
+              <input
+                type="number"
+                value={editItem.quantity}
+                onChange={(e) => setEditItem({ ...editItem, quantity: e.target.value })}
+                className="border p-2 w-full mb-2"
+              />
+              <input
+                type="number"
+                value={editItem.price}
+                onChange={(e) => setEditItem({ ...editItem, price: e.target.value })}
+                className="border p-2 w-full mb-2"
+              />
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => setEditItem(null)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="bg-green-500 text-white px-4 py-2 rounded"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Inventory;
