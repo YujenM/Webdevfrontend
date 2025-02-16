@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --main-color: #87CEEB; /* Sky Blue */
+    --secondary-main-color: #B0E2FF; /* Powder Blue */
+    --text-color: #000000; /* Black */
+    --accent-color1: #FF7F50; /* Coral */
+    --accent-color2: #98FF98; /* Mint Green */
+    --accent-color3: #E6E6FA; /* Lavender */
+}
+
+.greetings{
+    color:var(--accent-color1)
+}
+h1{
+    color:var(--accent-color1)
+}
+
+.userinfo{
+    margin:2% 4%;
+    padding: 10px;
+    background-color:var(--secondary-main-color);
+    border-radius:10px
+}
+
+.userpersonalinfo {
+    font-size:20px;
+    font-weight:300;
+
+}
+.container {
+    margin: 0 auto;
+    padding: 1rem;
+}
+.buttonsubmit {
+    background-color: var(--accent-color1);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
+    width: 90vw;
+}
+
+.buttonsubmit:hover {
+    background-color: var(--accent-color2);
+}
+
+.passwordchange{
+    width: 20vw;
+    padding: 0 5px;
+}
+
+@media(max-width:400px){
+    .passwordchange{
+        width: 90vw;
+    }
+}

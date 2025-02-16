@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Main colors defined at the root level */
+:root {
+--main-color: #87CEEB; /* Sky Blue */
+--secondary-main-color: #B0E2FF; /* Powder Blue */
+--text-color: #000000; /* Black */
+--accent-color1: #FF7F50; /* Coral */
+--accent-color2: #98FF98; /* Mint Green */
+--accent-color3: #E6E6FA; /* Lavender */
+}
+
+/* Container styles for the add notes section */
+.AddNotes {
+display: flex;
+justify-content: flex-end;
+margin: 10px;
+}
+
+/* Style for the 'Add Notes' button */
+.addnotesbtn {
+background-color: var(--main-color);
+color: white;
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+display: flex;
+align-items: center;
+}
+
+/* Change button color on hover */
+.addnotesbtn:hover {
+background-color: var(--accent-color1); /* Coral */
+}
+
+/* Modal overlay styles for dimming the background */
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* Modal content styles */
+.modal-content {
+background-color:var(--main-color);
+border-radius: 10px;
+padding: 20px;
+max-width: 90%;
+width: 400px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.modelheader {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+/* Style for 'Add a Note' title */
+.addnotetitle {
+    font-size: 2em;
+    color:var(--accent-color1);
+    font-weight:bold;
+
+}
+
+/* Style for form fields */
+.form-group {
+margin-bottom: 15px;
+}
+
+/* Style for form labels */
+.modelttiles {
+display: block;
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+/* Style for form inputs and textareas */
+input, textarea {
+width: 100%;
+padding: 8px;
+border: 1px solid var(--secondary-main-color);
+border-radius: 5px;
+}
+.userinput{
+    padding: 10px;
+}
+
+/* Button to close the modal */
+.modelheader button {
+background-color: transparent;
+border: none;
+cursor: pointer;
+font-size: 1.2em;
+}
+
+/* Style for 'Add Note' button inside the form */
+.modal-content button {
+background-color: var(--accent-color2); /* Mint Green */
+color: var(--text-color);
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+}
+
+/* Change button color on hover */
+.modal-content button:hover {
+background-color: var(--accent-color1); /* Coral */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+.modal-content {
+    width: 90%;
+    padding: 10px;
+}
+}

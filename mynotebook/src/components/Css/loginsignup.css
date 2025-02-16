@@ -1,0 +1,107 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+    --main-color: #87CEEB; /* Sky Blue */
+    --secondary-main-color: #B0E2FF; /* Powder Blue */
+    --text-color: #000000; /* Black */
+    --accent-color1: #FF7F50; /* Coral */
+    --accent-color2: #98FF98; /* Mint Green */
+    --accent-color3: #E6E6FA; /* Lavender */
+}
+
+.formcenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:var(--main-color);
+    height:100vh;
+    width: 100%;
+}
+
+
+
+.background {
+    background-color: var(--main-color);
+    width: 40vw;
+    height: 40vh;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+.backgroundsignup{
+    background-color: var(--main-color);
+    width: 40vw;
+    height: 60vh;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+.buttonsubmit {
+    background-color: var(--accent-color1);
+    width: 9vw;
+    text-align: center;
+}
+
+.buttonsubmit:hover {
+    background-color: var(--accent-color2);
+    color: var(--text-color);
+}
+
+
+
+
+
+@media (max-width: 900px) {
+    .background {
+        width: 60vw; 
+        height: 50vh;
+        padding: 15px; 
+    }
+    .backgroundsignup{
+        width: 60vw; 
+        height: 60vh;
+        padding: 15px; 
+    }
+    .buttonsubmit {
+        width: 20vw;
+    }
+}
+
+
+.gotosignuporlogin{
+    color:var(--accent-color1);
+}
+
+@media (max-width: 480px) {
+    .background {
+        width: 80vw; 
+        height: 60vh; 
+        padding: 20px; 
+        border-radius: 15px; 
+    }
+    .backgroundsignup{
+        width: 80vw; 
+        height: 79vh; 
+        padding: 20px; 
+        border-radius: 15px; 
+    }
+
+    .buttonsubmit {
+        width: 30vw; 
+    }
+
+    .title {
+        font-size: 1.5rem; 
+    }
+}
+
+.gologin h1{
+    color:var(--text-color)
+}
+

@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --main-color: #87CEEB; /* Sky Blue */
+    --secondary-main-color: #B0E2FF; /* Powder Blue */
+    --text-color: #000000; /* Black */
+    --accent-color1: #FF7F50; /* Coral */
+    --accent-color2: #98FF98; /* Mint Green */
+    --accent-color3: #E6E6FA; /* Lavender */
+}
+
+/* Default styles for the Navbar */
+.logo{
+  color:var(--accent-color1);
+  font-size:1.5em;
+  font-weight: bold;
+  margin: 0 4%;
+
+}
+.navbar {
+    background-color: var(--main-color);
+    color: var(--text-color);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .navbar-logo {
+    font-size: 1.5rem;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    align-items: center;
+  }
+  
+  
+  .navbar-list {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .login-btn, .signup-btn {
+    background-color: var(--accent-color1);
+    border: none;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-btn:hover {
+    background-color: var(--accent-color2);
+  }
+  
+  .signup-btn:hover {
+    background-color: var(--accent-color3);
+  }
+  
+  /* Responsive styles for smaller screens */
+  .navbar-toggle {
+    display: none;
+    background-color: var(--accent-color1);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 4rem;
+      right: 0;
+      background-color: var(--main-color);
+      padding: 1rem;
+      border: 1px solid var(--accent-color1);
+    }
+  
+    .navbar-links.open {
+      display: block;
+    }
+  
+    .navbar-list {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar-toggle {
+      display: block;
+    }
+  }
+  
+
+
+
+
+
+
+
+
+/* item card  */
+
+.notebook-card {
+    background-color: var(--main-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.notebook-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent-color1);
+}
+
+.icons {
+    display: flex;
+    gap: 20px; 
+    font-size: 1.5rem;
+}
+
+.icon {
+    color: var(--accent-color1); 
+    cursor:pointer;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.date {
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .notebook-card {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .icons {
+        gap: 10px;
+    }
+}
+
+
+
+/* Alert component */
+/* Basic styling for the alert box */
+.alertbox {
+  position: fixed;
+  bottom: 20px; /* Distance from the bottom */
+  right: 20px; /* Distance from the right */
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+.alert {
+  width: 300px; 
+  padding: 15px; 
+
+
+  border-radius: 5px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: slideIn 0.5s ease-in-out; 
+}
+
+.alert-close {
+  animation: slideOut 0.5s ease-in-out; 
+}
+
+
+/* Alert variants based on type */
+.alert-info {
+    background-color: var(--secondary-main-color); 
+}
+
+.alert-warning {
+    background-color: var(--accent-color1);
+}
+
+.alert-success {
+    background-color: var(--accent-color2); 
+}
+
+.alert-error {
+    background-color: var(--accent-color3);
+}
