@@ -2,117 +2,124 @@ import Notecontext from './Notecontext';
 import { useState } from 'react'; 
 
 const Notestate = (props) => {
-    const host="http://localhost:2000"
-    const notesInitial = [];
-
-    const [notes, setNotes] = useState(notesInitial);
-
-// Get all Notes
-const getNotes =async()  => {
-    try{
-        const response=await fetch(`${host}/api/notes/fetchallnotes`,{
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'auth-token': localStorage.getItem('token'),
-            },
-        })
-        const json= await response.json();
-        console.log(json);
-        setNotes(json);
-    }catch(err){
-        console.log("Error:"+err)
-    }
-};
+    const host = "http://127.0.0.1:8000";
+    
+    const [getInventory, setGetInventory] = useState([]);
 
 
-
-
-
-// add notes
-const addNote =async(title,description,tag)  => {
-    const response= await fetch(`${host}/api/notes/addnote`,{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'auth-token': localStorage.getItem('token'),
-        },
-        body: JSON.stringify({title,description,tag})
-    })
-    const note= await response.json();
-    setNotes(notes.concat(note))
-};
-
-// Delete a Note
-const deletenote=async (id)=>{
-    const response = await fetch(`${host}/api/notes/deletenode/${id}`, {
-        method: 'DELETE', 
-        headers: {
-            'Content-Type': 'application/json',
-            'auth-token': localStorage.getItem('token'),
-        }, 
-    });
-    const json=response.json();
-    console.log(json)
-    // console.log("Deleting the note" +id)
-    const newnotes=notes.filter((note)=>{return note._id!==id})
-    setNotes(newnotes)
-}
-// Edit a Note
-const editnote = async (id, title, description, tag) => {
-    // console.log(`Editing the note with id: ${id}`);
-
-    // API call to update the note
-    const response = await fetch(`${host}/api/notes/updatenode/${id}`, {
-        method: 'PUT', 
-        headers: {
-            'Content-Type': 'application/json',
-            'auth-token': localStorage.getItem('token'),
-        },
-        
-        body: JSON.stringify({ title, description, tag }), 
-    });
-
-    const responseJson = await response.json();
-    console.log('Edit response:', responseJson);
-    // edit a note
-    let newnote=JSON.parse(JSON.stringify(notes))
-    for (let index = 0; index < notes.length; index++){
-        const element = notes[index];
-        if (element._id === id){
-            newnote[index].title=title;
-            newnote[index].description=description;
-            newnote[index].tag=tag;
-            break;
+    const getallinventory = async () => {
+        try {
+            const userId = localStorage.getItem("user_id");
+            if (!userId) {
+                console.error("User ID not found in localStorage");
+                return;
+            }
+    
+            const response = await fetch(`${host}/api/getproducts/${userId}`);
+            const result = await response.json();
+    
+            if (result.success) {
+                setGetInventory(result.data);
+            } else {
+                console.error("Failed to fetch inventory:", result.message);
+            }
+        } catch (error) {
+            console.error("Error fetching inventory:", error);
         }
-        
+    };
+    const additems = async (product_name, product_price, product_quantity) => {
+        try {
+            const userId = localStorage.getItem("user_id");
+            if (!userId) {
+                console.error("User ID not found in localStorage");
+                return;
+            }
+    
+            const response = await fetch(`${host}/api/createproduct/${userId}`, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    product_name,
+                    product_price,
+                    product_quantity
+                })
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                console.log("Product added successfully:", result);
+            } else {
+                console.error("Failed to add product:", result.message);
+            }
+        } catch (error) {
+            console.error("Error adding product:", error);
+        }
     }
-    // console.log(newnote);
-    setNotes(newnote);
-};
+    const updateProduct = async (productId, product_name, product_price, product_quantity) => {
+        try {
+            const userId = localStorage.getItem("user_id");
+            if (!userId) {
+                console.error("User ID not found in localStorage");
+                return;
+            }
+    
+            const response = await fetch(`${host}/api/updateproduct/${userId}/${productId}`, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    product_name,
+                    product_price,
+                    product_quantity
+                })
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                console.log("Product updated successfully:", result);
+            } else {
+                console.error("Failed to update product:", result.message);
+            }
+        } catch (error) {
+            console.error("Error updating product:", error);
+        }
+    };
+    const deleteProduct = async (productId) => {
+        try {
+            const userId = localStorage.getItem("user_id");
+            if (!userId) {
+                console.error("User ID not found in localStorage");
+                return;
+            }
+    
+            const response = await fetch(`${host}/api/deleteproduct/${userId}/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            });
 
-// get user detail
-
-
-const getuserdata = async () => {
-try {
-    const response = await fetch('http://localhost:2000/api/auth/getuser', {
-    method: 'POST',
-    headers: {
-        'auth-token': localStorage.getItem('token'),
-    },
-    });
-    const json = await response.json();
-    return json
-} catch (error) {
-    console.error('Error fetching user data:', error);
-}
-};
+            if (response.ok) {
+                console.log(`Product ${productId} deleted successfully`);
+                setGetInventory(getInventory.filter(item => item.product_id !== productId)); // Remove from state
+            } else {
+                console.error("Failed to delete product");
+            }
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
+    };
 
 
 
 return (
-    <Notecontext.Provider value={{ notes, addNote, deletenote, editnote,getNotes,getuserdata }}>
+    <Notecontext.Provider value={{getInventory,getallinventory ,additems ,updateProduct,deleteProduct}}>
         {props.children}
     </Notecontext.Provider>
 );

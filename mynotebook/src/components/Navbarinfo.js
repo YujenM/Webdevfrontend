@@ -1,13 +1,7 @@
 export const navbarinfo=[
     {
-        title:'Note',
+        title:'Dashboard',
         path: '/',
-        cName:'nav-text',
-        
-    },
-    {
-        title:'Settings',
-        path: '/About',
         cName:'nav-text',
         
     },

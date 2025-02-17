@@ -23,7 +23,7 @@ const Navbar = (props) => {
         <nav className="navbar">
         <div className="navbar-container">
             <div className="navbar-logo">
-            <Link to="/" className='logo'>NoteBook</Link>
+            <Link to="/" className='logo'>Closet</Link>
             </div>
             <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
             <ul className="navbar-list">

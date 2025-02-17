@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from 'react';
+import Notecontext from '../context/notes/Notecontext';
 
 function Products() {
   const [newProduct, setNewProduct] = useState({ name: "", quantity: "", price: "" });
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
+  const { additems } = useContext(Notecontext); // Get additems function from Context API
+
   // Add Product
-  const handleAddProduct = (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
     if (!newProduct.name || !newProduct.quantity || !newProduct.price) return;
+
+    // Convert quantity & price to appropriate types
+    const productData = {
+      product_name: newProduct.name,
+      product_price: parseFloat(newProduct.price),
+      product_quantity: parseInt(newProduct.quantity, 10),
+    };
+
+    await additems(productData.product_name, productData.product_price, productData.product_quantity);
+
     setNewProduct({ name: "", quantity: "", price: "" });
     alert("Product added successfully!");
   };
@@ -17,7 +30,6 @@ function Products() {
   };
 
   return (
-    
     <div
       className={`flex justify-center items-center min-h-screen transition-all duration-500 ${
         isDarkTheme ? "bg-gray-900 text-white" : "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
@@ -31,14 +43,11 @@ function Products() {
               : "bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text"
           }`}
         >
-           
           Inventory Management
         </h1>
 
-      
-        
- {/* Theme Toggle Button */}
- <button
+        {/* Theme Toggle Button */}
+        <button
           onClick={toggleTheme}
           className={`mb-4 py-2 px-4 rounded-lg font-bold ${
             isDarkTheme
@@ -48,8 +57,8 @@ function Products() {
         >
           Toggle {isDarkTheme ? "Light" : "Dark"} Theme
         </button>
-        {/* Form for Adding */}
 
+        {/* Form for Adding */}
         <form onSubmit={handleAddProduct} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Product Name</label>
